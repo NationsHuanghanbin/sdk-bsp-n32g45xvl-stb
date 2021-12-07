@@ -1,55 +1,106 @@
 {
-    "yaml_version": 3,
-    "pkg_version": "1.0.0",
-    "pkg_vendor": "NATIONS",
-    "pkg_type": "Board_Support_Packages",
-    "board_support_package_location": "C:\\Users\\huang.hanbin\\Desktop\\TEST2",
-    "board": {
-        "name": "N32G45XVL-STB",
-        "version": "1.1",
-        "vendor": "NATIONS",
-        "description_zh": "N/A",
-        "description_en": "N/A",
-        "small_image": "C:\\Users\\huang.hanbin\\Desktop\\111astedImage.jpg",
-        "large_image": "C:\\Users\\huang.hanbin\\Desktop\\pastedImage.jpg",
-        "sale_contact_cn": "N/A",
-        "sale_contact_global": "N/A",
-        "buy_url_cn": "N/A",
-        "buy_url_global": "N/A",
-        "price_cn": "N/A CNY",
-        "price_global": "N/A USD",
-        "debugger": "DAP-LINK",
-        "debug_interface": "SWD",
-        "emulator_machine": ""
-    },
     "chip": {
-        "device_vendor": "NATIONS",
-        "family_name": "N32",
+        "tx_name": "PA9",
+        "chip_name": "N32G457VEL7",
+        "source_freq": "8000000",
+        "uart_name": "UART1",
+        "clock_source": "HSE",
         "series_name": "N32G4",
         "sub_series_name": "N32G45X",
-        "chip_name": "N32G457VEL7",
-        "rx_name": "PI9",
-        "tx_name": "PA0",
-        "clock_source": "HSE",
-        "source_freq": "25000000",
-        "target_freq": "480000000",
-        "uart_name": "UART4"
+        "device_vendor": "NATIONS",
+        "family_name": "N32",
+        "rx_name": "PA10",
+        "target_freq": "240000000"
     },
-    "docs": [],
-    "features": [
-        "N32G45x Series‒ High perfermance , Rich Analog, Connectivity MCU,ARM Cortex-M4 +FPU based 32-bit MCU up to 144MHz，128/256/512KB Flash，80/144KB SRAM，USB, SDIO、 Ethernet,2xCANs, 2xDACs ,up to 4xADCs、4xOPAMPs、7xCOMPs、15 communication interfaces, Security"
-    ],
     "features_zh": [
-        "N32G45x Series‒ High perfermance , Rich Analog, Connectivity MCU,ARM Cortex-M4 +FPU based 32-bit MCU up to 144MHz，128/256/512KB Flash，80/144KB SRAM，USB, SDIO、 Ethernet,2xCANs, 2xDACs ,up to 4xADCs、4xOPAMPs、7xCOMPs、15 communication interfaces, Security"
+        "N32G45x Series‒ High perfermance ",
+        "Rich Analog, Connectivity MCU,ARM Cortex-M4 +FPU based 32-bit MCU up to 144MHz，128/256/512KB Flash，80/144KB SRAM",
+        "USB, SDIO、 Ethernet,2xCANs, 2xDACs ,up to 4xADCs、4xOPAMPs、7xCOMPs、15 communication interfaces, Security"
+    ],
+    "yaml_version": 3,
+    "pkg_version": "1.0.1",
+    "example_projects": [],
+    "features": [
+        "N32G45x Series‒ High perfermance ",
+        "Rich Analog, Connectivity MCU,ARM Cortex-M4 +FPU based 32-bit MCU up to 144MHz，128/256/512KB Flash，80/144KB SRAM",
+        "USB, SDIO、 Ethernet,2xCANs, 2xDACs ,up to 4xADCs、4xOPAMPs、7xCOMPs、15 communication interfaces, Security"
+    ],
+    "docs": [
+        {
+            "file": "C:\\Users\\huang.hanbin\\Downloads\\UG_N32G45XVL-STB开发板硬件使用手册V1.1.pdf",
+            "title": "UG_N32G45XVL-STB开发板硬件使用手册V1.1",
+            "category": "manual"
+        }
     ],
     "template_projects": [
         {
-            "project_name": "N32G45XVL-STB",
-            "project_description": "",
             "project_type": "rt-thread|@full|@4.0.2",
-            "project_path": "C:\\Users\\huang.hanbin\\Desktop\\TEST\\sdk-bsp-n32g45xrl-stb\\project_0",
+            "builtin_files": [
+                {
+                    "source_path_offset": "project_0",
+                    "files_and_folders": [
+                        ".config",
+                        ".cproject",
+                        ".project",
+                        ".settings",
+                        "applications",
+                        "board",
+                        "cconfig.h",
+                        "Kconfig",
+                        "Libraries",
+                        "makefile.targets",
+                        "project.uvprojx",
+                        "rt-thread",
+                        "rtconfig.h",
+                        "rtconfig.py",
+                        "rtconfig_preinc.h",
+                        "SConscript",
+                        "SConstruct",
+                        "template.uvprojx"
+                    ],
+                    "target_path_offset": ""
+                }
+            ],
+            "project_description": "",
+            "external_files": [],
+            "project_name": "N32G45XVL-STB",
+            "project_path": "C:\\Users\\huang.hanbin\\Desktop\\TEST2\\sdk-bsp-n32g45xvl-stb/project_0",
             "is_remove_rtt_source_in_project": "false"
         }
     ],
-    "example_projects": []
+    "yamlFolderPath": "C:\\Users\\huang.hanbin\\Desktop\\TEST2\\sdk-bsp-n32g45xvl-stb",
+    "default_projects": [
+        {
+            "project_type": "rt-thread|@full|@4.0.2",
+            "builtin_files": [
+                {
+                    "$ref": "$.template\\_projects[0].builtin\\_files[0]"
+                }
+            ],
+            "project_description": "",
+            "external_files": [],
+            "project_name": "N32G45XVL-STB"
+        }
+    ],
+    "pkg_vendor": "NATIONS",
+    "board": {
+        "emulator_machine": "",
+        "debug_interface": "SWD",
+        "small_image": "C:\\Users\\huang.hanbin\\Desktop\\TEST2\\sdk-bsp-n32g45xvl-stb/documents/images/111astedImage.jpg",
+        "debugger": "DAP-LINK",
+        "description_en": "N/A",
+        "sale_contact_cn": "N/A",
+        "buy_url_global": "N/A",
+        "price_global": "N/A USD",
+        "version": "1.1",
+        "sale_contact_global": "N/A",
+        "buy_url_cn": "N/A",
+        "vendor": "NATIONS",
+        "name": "N32G45XVL-STB",
+        "price_cn": "N/A CNY",
+        "large_image": "C:\\Users\\huang.hanbin\\Desktop\\TEST2\\sdk-bsp-n32g45xvl-stb/documents/images/pastedImage.jpg",
+        "description_zh": "N/A"
+    },
+    "pkg_type": "Board_Support_Packages",
+    "board_support_package_location": "C:\\Users\\huang.hanbin\\Desktop\\TEST3"
 }

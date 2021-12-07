@@ -27,19 +27,26 @@ chip:
   target_freq: '240000000'
   tx_name: PA9
   uart_name: UART1
-docs: []
+docs:
+- category: manual
+  file: documents/UG_N32G45XVL-STB开发板硬件使用手册V1.1.pdf
+  title: UG_N32G45XVL-STB开发板硬件使用手册V1.1
 example_projects: []
 features:
-- N32G45x Series‒ High perfermance , Rich Analog, Connectivity MCU,ARM Cortex-M4 +FPU
-  based 32-bit MCU up to 144MHz，128/256/512KB Flash，80/144KB SRAM，USB, SDIO、 Ethernet,2xCANs,
-  2xDACs ,up to 4xADCs、4xOPAMPs、7xCOMPs、15 communication interfaces, Security
+- 'N32G45x Series‒ High perfermance '
+- Rich Analog, Connectivity MCU,ARM Cortex-M4 +FPU based 32-bit MCU up to 144MHz，128/256/512KB
+  Flash，80/144KB SRAM
+- USB, SDIO、 Ethernet,2xCANs, 2xDACs ,up to 4xADCs、4xOPAMPs、7xCOMPs、15 communication
+  interfaces, Security
 features_zh:
-- N32G45x Series‒ High perfermance , Rich Analog, Connectivity MCU,ARM Cortex-M4 +FPU
-  based 32-bit MCU up to 144MHz，128/256/512KB Flash，80/144KB SRAM，USB, SDIO、 Ethernet,2xCANs,
-  2xDACs ,up to 4xADCs、4xOPAMPs、7xCOMPs、15 communication interfaces, Security
+- 'N32G45x Series‒ High perfermance '
+- Rich Analog, Connectivity MCU,ARM Cortex-M4 +FPU based 32-bit MCU up to 144MHz，128/256/512KB
+  Flash，80/144KB SRAM
+- USB, SDIO、 Ethernet,2xCANs, 2xDACs ,up to 4xADCs、4xOPAMPs、7xCOMPs、15 communication
+  interfaces, Security
 pkg_type: Board_Support_Packages
 pkg_vendor: NATIONS
-pkg_version: 1.0.0
+pkg_version: 1.0.1
 template_projects:
 - builtin_files:
   - files_and_folders:
