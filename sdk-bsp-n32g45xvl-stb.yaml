@@ -1,0 +1,77 @@
+board:
+  buy_url_cn: N/A
+  buy_url_global: N/A
+  debug_interface: SWD
+  debugger: DAP-LINK
+  description_en: N/A
+  description_zh: N/A
+  emulator_machine: ''
+  large_image: documents/images/pastedImage.jpg
+  name: N32G45XVL-STB
+  price_cn: N/A CNY
+  price_global: N/A USD
+  sale_contact_cn: N/A
+  sale_contact_global: N/A
+  small_image: documents/images/111astedImage.jpg
+  vendor: NATIONS
+  version: '1.1'
+chip:
+  chip_name: N32G457VEL7
+  clock_source: HSE
+  device_vendor: NATIONS
+  family_name: N32
+  rx_name: PA10
+  series_name: N32G4
+  source_freq: '8000000'
+  sub_series_name: N32G45X
+  target_freq: '240000000'
+  tx_name: PA9
+  uart_name: UART1
+docs:
+- category: manual
+  file: documents/UG_N32G45XVL-STB开发板硬件使用手册V1.1.pdf
+  title: UG_N32G45XVL-STB开发板硬件使用手册V1.1
+example_projects: []
+features:
+- 'N32G45x Series‒ High perfermance '
+- Rich Analog, Connectivity MCU,ARM Cortex-M4 +FPU based 32-bit MCU up to 144MHz，128/256/512KB
+  Flash，80/144KB SRAM
+- USB, SDIO、 Ethernet,2xCANs, 2xDACs ,up to 4xADCs、4xOPAMPs、7xCOMPs、15 communication
+  interfaces, Security
+features_zh:
+- 'N32G45x Series‒ High perfermance '
+- Rich Analog, Connectivity MCU,ARM Cortex-M4 +FPU based 32-bit MCU up to 144MHz，128/256/512KB
+  Flash，80/144KB SRAM
+- USB, SDIO、 Ethernet,2xCANs, 2xDACs ,up to 4xADCs、4xOPAMPs、7xCOMPs、15 communication
+  interfaces, Security
+pkg_type: Board_Support_Packages
+pkg_vendor: NATIONS
+pkg_version: 1.0.2
+template_projects:
+- builtin_files:
+  - files_and_folders:
+    - .config
+    - .cproject
+    - .project
+    - .settings
+    - applications
+    - board
+    - cconfig.h
+    - Kconfig
+    - Libraries
+    - makefile.targets
+    - project.uvprojx
+    - rt-thread
+    - rtconfig.h
+    - rtconfig.py
+    - rtconfig_preinc.h
+    - SConscript
+    - SConstruct
+    - template.uvprojx
+    source_path_offset: project_0
+    target_path_offset: ''
+  external_files: []
+  project_description: ''
+  project_name: N32G45XVL-STB
+  project_type: rt-thread|@full|@4.0.2
+yaml_version: 3
