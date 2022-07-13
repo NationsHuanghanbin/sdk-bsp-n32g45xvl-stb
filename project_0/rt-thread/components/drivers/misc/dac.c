@@ -76,7 +76,7 @@ rt_err_t rt_hw_dac_register(rt_dac_device_t device, const char *name, const stru
     rt_err_t result = RT_EOK;
     RT_ASSERT(ops != RT_NULL && ops->convert != RT_NULL);
 
-    device->parent.type = RT_Device_Class_Miscellaneous;
+    device->parent.type = RT_Device_Class_DAC;
     device->parent.rx_indicate = RT_NULL;
     device->parent.tx_complete = RT_NULL;
 
@@ -98,13 +98,11 @@ rt_err_t rt_hw_dac_register(rt_dac_device_t device, const char *name, const stru
     return result;
 }
 
-rt_uint32_t rt_dac_write(rt_dac_device_t dev, rt_uint32_t channel, rt_uint32_t value)
+rt_err_t rt_dac_write(rt_dac_device_t dev, rt_uint32_t channel, rt_uint32_t value)
 {
     RT_ASSERT(dev);
 
-    dev->ops->convert(dev, channel, &value);
-
-    return RT_EOK;
+    return dev->ops->convert(dev, channel, &value);
 }
 
 rt_err_t rt_dac_enable(rt_dac_device_t dev, rt_uint32_t channel)
@@ -124,7 +122,7 @@ rt_err_t rt_dac_enable(rt_dac_device_t dev, rt_uint32_t channel)
     return result;
 }
 
-rt_err_t rt_dac_disabled(rt_dac_device_t dev, rt_uint32_t channel)
+rt_err_t rt_dac_disable(rt_dac_device_t dev, rt_uint32_t channel)
 {
     rt_err_t result = RT_EOK;
 
@@ -200,7 +198,7 @@ static int dac(int argc, char **argv)
             {
                 if (argc == 3)
                 {
-                    result = rt_dac_disabled(dac_device, atoi(argv[2]));
+                    result = rt_dac_disable(dac_device, atoi(argv[2]));
                     result_str = (result == RT_EOK) ? "success" : "failure";
                     rt_kprintf("%s channel %d disable %s \n", dac_device->parent.parent.name, atoi(argv[2]), result_str);
                 }

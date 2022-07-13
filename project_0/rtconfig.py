@@ -1,11 +1,9 @@
 import os
 
-print(os.path.abspath(__file__))
-
 # toolchains options
 ARCH='arm'
 CPU='cortex-m4'
-CROSS_TOOL='gcc'
+CROSS_TOOL='keil'
 
 # bsp lib config
 BSP_LIBRARY_TYPE = None
@@ -14,14 +12,12 @@ if os.getenv('RTT_CC'):
     CROSS_TOOL = os.getenv('RTT_CC')
 if os.getenv('RTT_ROOT'):
     RTT_ROOT = os.getenv('RTT_ROOT')
-else:
-    RTT_ROOT = os.path.normpath(os.getcwd() + '/../../..')
 
 # cross_tool provides the cross compiler
 # EXEC_PATH is the compiler execute path, for example, CodeSourcery, Keil MDK, IAR
 if  CROSS_TOOL == 'gcc':
     PLATFORM    = 'gcc'
-    EXEC_PATH   = r'/opt/gcc-arm-none-eabi-6_2-2016q4/bin'
+    EXEC_PATH   = r'C:\Users\XXYYZZ'
 elif CROSS_TOOL == 'keil':
     PLATFORM    = 'armcc'
     EXEC_PATH   = r'C:/Keil_v5'
@@ -50,7 +46,7 @@ if PLATFORM == 'gcc':
     DEVICE = ' -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard -ffunction-sections -fdata-sections'
     CFLAGS = DEVICE + ' -Dgcc'
     AFLAGS = ' -c' + DEVICE + ' -x assembler-with-cpp -Wa,-mimplicit-it=thumb '
-    LFLAGS = DEVICE + ' -Wl,--gc-sections,-Map=rt-thread.map,-cref,-u,Reset_Handler -T board/linker_scripts/link.lds'
+    LFLAGS = DEVICE + ' -Wl,--gc-sections,-Map=rtthread.map,-cref,-u,Reset_Handler -T board/linker_scripts/link.lds'
 
     CPATH = ''
     LPATH = ''
@@ -61,7 +57,7 @@ if PLATFORM == 'gcc':
     else:
         CFLAGS += ' -O2'
 
-    CXXFLAGS = CFLAGS
+    CXXFLAGS = CFLAGS 
 
     POST_ACTION = OBJCPY + ' -O binary $TARGET rtthread.bin\n' + SIZE + ' $TARGET \n'
 
@@ -77,7 +73,7 @@ elif PLATFORM == 'armcc':
     DEVICE = ' --cpu Cortex-M4.fp '
     CFLAGS = '-c ' + DEVICE + ' --apcs=interwork --c99'
     AFLAGS = DEVICE + ' --apcs=interwork '
-    LFLAGS = DEVICE + ' --scatter "board\linker_scripts\link.sct" --info sizes --info totals --info unused --info veneers --list rt-thread.map --strict'
+    LFLAGS = DEVICE + ' --scatter "board\linker_scripts\link.sct" --info sizes --info totals --info unused --info veneers --list rtthread.map --strict'
     CFLAGS += ' -I' + EXEC_PATH + '/ARM/ARMCC/include'
     LFLAGS += ' --libpath=' + EXEC_PATH + '/ARM/ARMCC/lib'
 
@@ -92,7 +88,7 @@ elif PLATFORM == 'armcc':
     else:
         CFLAGS += ' -O2'
 
-    CXXFLAGS = CFLAGS
+    CXXFLAGS = CFLAGS 
     CFLAGS += ' -std=c99'
 
     POST_ACTION = 'fromelf --bin $TARGET --output rtthread.bin \nfromelf -z $TARGET'
@@ -142,7 +138,7 @@ elif PLATFORM == 'iar':
     LFLAGS += ' --entry __iar_program_start'
 
     CXXFLAGS = CFLAGS
-
+    
     EXEC_PATH = EXEC_PATH + '/arm/bin/'
     POST_ACTION = 'ielftool --bin $TARGET rtthread.bin'
 
@@ -152,19 +148,3 @@ def dist_handle(BSP_ROOT, dist_dir):
     sys.path.append(os.path.join(os.path.dirname(BSP_ROOT), 'tools'))
     from sdk_dist import dist_do_building
     dist_do_building(BSP_ROOT, dist_dir)
-    
-print('ARCH       =[%s]' %(ARCH      ))
-print('CPU        =[%s]' %(CPU       ))
-print('CROSS_TOOL =[%s]' %(CROSS_TOOL))
-print('RTT_ROOT   =[%s]' %(RTT_ROOT  ))
-print('PLATFORM   =[%s]' %(PLATFORM  ))
-print('EXEC_PATH  =[%s]' %(EXEC_PATH ))
-print('CC         =[%s]' %(CC        ))
-print('AS         =[%s]' %(AS        ))
-print('AR         =[%s]' %(AR        ))
-print('LINK       =[%s]' %(LINK      ))
-print('TARGET_EXT =[%s]' %(TARGET_EXT))
-print('DEVICE     =[%s]' %(DEVICE    ))
-print('CFLAGS     =[%s]' %(CFLAGS    ))
-print('AFLAGS     =[%s]' %(AFLAGS    ))
-print('LFLAGS     =[%s]' %(LFLAGS    ))

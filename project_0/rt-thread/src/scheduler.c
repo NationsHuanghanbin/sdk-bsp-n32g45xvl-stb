@@ -26,8 +26,8 @@
  *                             add _scheduler_get_highest_priority_thread to find highest priority task
  *                             rt_schedule_insert_thread won't insert current task to ready queue
  *                             in smp version, rt_hw_context_switch_interrupt maybe switch to
- *                               new task directly
- *
+ *                             new task directly
+ * 2022-01-07     Gabriel      Moving __on_rt_xxxxx_hook to scheduler.c
  */
 
 #include <rtthread.h>
@@ -47,7 +47,14 @@ struct rt_thread *rt_current_thread = RT_NULL;
 rt_uint8_t rt_current_priority;
 #endif /* RT_USING_SMP */
 
-#ifdef RT_USING_HOOK
+#ifndef __on_rt_scheduler_hook
+    #define __on_rt_scheduler_hook(from, to)        __ON_HOOK_ARGS(rt_scheduler_hook, (from, to))
+#endif
+#ifndef __on_rt_scheduler_switch_hook
+    #define __on_rt_scheduler_switch_hook(tid)      __ON_HOOK_ARGS(rt_scheduler_switch_hook, (tid))
+#endif
+
+#if defined(RT_USING_HOOK) && defined(RT_HOOK_USING_FUNC_PTR)
 static void (*rt_scheduler_hook)(struct rt_thread *from, struct rt_thread *to);
 static void (*rt_scheduler_switch_hook)(struct rt_thread *tid);
 
@@ -96,7 +103,7 @@ static void _rt_scheduler_stack_check(struct rt_thread *thread)
         (rt_ubase_t)thread->sp >
         (rt_ubase_t)thread->stack_addr + (rt_ubase_t)thread->stack_size)
     {
-        rt_ubase_t level;
+        rt_base_t level;
 
         rt_kprintf("thread:%s stack overflow\n", thread->name);
 
@@ -648,7 +655,7 @@ void rt_schedule_insert_thread(struct rt_thread *thread)
     int cpu_id;
     int bind_cpu;
     rt_uint32_t cpu_mask;
-    register rt_base_t level;
+    rt_base_t level;
 
     RT_ASSERT(thread != RT_NULL);
 
@@ -710,12 +717,12 @@ __exit:
 #else
 void rt_schedule_insert_thread(struct rt_thread *thread)
 {
-    register rt_base_t temp;
+    rt_base_t level;
 
     RT_ASSERT(thread != RT_NULL);
 
     /* disable interrupt */
-    temp = rt_hw_interrupt_disable();
+    level = rt_hw_interrupt_disable();
 
     /* it's current thread, it should be RUNNING thread */
     if (thread == rt_current_thread)
@@ -741,7 +748,7 @@ void rt_schedule_insert_thread(struct rt_thread *thread)
 
 __exit:
     /* enable interrupt */
-    rt_hw_interrupt_enable(temp);
+    rt_hw_interrupt_enable(level);
 }
 #endif /* RT_USING_SMP */
 
@@ -755,7 +762,7 @@ __exit:
 #ifdef RT_USING_SMP
 void rt_schedule_remove_thread(struct rt_thread *thread)
 {
-    register rt_base_t level;
+    rt_base_t level;
 
     RT_ASSERT(thread != RT_NULL);
 
@@ -807,7 +814,7 @@ void rt_schedule_remove_thread(struct rt_thread *thread)
 #else
 void rt_schedule_remove_thread(struct rt_thread *thread)
 {
-    register rt_base_t level;
+    rt_base_t level;
 
     RT_ASSERT(thread != RT_NULL);
 
@@ -844,7 +851,7 @@ void rt_schedule_remove_thread(struct rt_thread *thread)
 #ifdef RT_USING_SMP
 void rt_enter_critical(void)
 {
-    register rt_base_t level;
+    rt_base_t level;
     struct rt_thread *current_thread;
 
     /* disable interrupt */
@@ -883,7 +890,7 @@ void rt_enter_critical(void)
 #else
 void rt_enter_critical(void)
 {
-    register rt_base_t level;
+    rt_base_t level;
 
     /* disable interrupt */
     level = rt_hw_interrupt_disable();
@@ -906,7 +913,7 @@ RTM_EXPORT(rt_enter_critical);
 #ifdef RT_USING_SMP
 void rt_exit_critical(void)
 {
-    register rt_base_t level;
+    rt_base_t level;
     struct rt_thread *current_thread;
 
     /* disable interrupt */
@@ -947,7 +954,7 @@ void rt_exit_critical(void)
 #else
 void rt_exit_critical(void)
 {
-    register rt_base_t level;
+    rt_base_t level;
 
     /* disable interrupt */
     level = rt_hw_interrupt_disable();

@@ -12,7 +12,7 @@ board:
   price_global: N/A USD
   sale_contact_cn: N/A
   sale_contact_global: N/A
-  small_image: documents/images/111astedImage.jpg
+  small_image: documents/images/pastedImage.jpg
   vendor: NATIONS
   version: '1.1'
 chip:
@@ -27,10 +27,7 @@ chip:
   target_freq: '240000000'
   tx_name: PA9
   uart_name: UART1
-docs:
-- category: manual
-  file: documents/UG_N32G45XVL-STB开发板硬件使用手册V1.1.pdf
-  title: UG_N32G45XVL-STB开发板硬件使用手册V1.1
+docs: []
 example_projects: []
 features:
 - 'N32G45x Series‒ High perfermance '
@@ -46,7 +43,7 @@ features_zh:
   interfaces, Security
 pkg_type: Board_Support_Packages
 pkg_vendor: NATIONS
-pkg_version: 1.0.2
+pkg_version: 1.0.3
 template_projects:
 - builtin_files:
   - files_and_folders:
@@ -57,16 +54,29 @@ template_projects:
     - applications
     - board
     - cconfig.h
+    - figures
     - Kconfig
-    - Libraries
+    - libraries
     - makefile.targets
+    - project.dep
+    - project.ewd
+    - project.ewp
+    - project.eww
+    - project.uvoptx
     - project.uvprojx
+    - README.md
     - rt-thread
     - rtconfig.h
     - rtconfig.py
     - rtconfig_preinc.h
+    - RTE
     - SConscript
     - SConstruct
+    - settings
+    - template.dep
+    - template.ewp
+    - template.eww
+    - template.uvoptx
     - template.uvprojx
     source_path_offset: project_0
     target_path_offset: ''

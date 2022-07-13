@@ -9,6 +9,7 @@
 #define N32G45X
 #define RT_USING_NEWLIB
 #define USE_STDPERIPH_DRIVER
+#define _POSIX_C_SOURCE 1
 #define __RTTHREAD__
 
 #endif /*RTCONFIG_PREINC_H__*/

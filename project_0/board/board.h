@@ -1,34 +1,54 @@
-/*
- * Copyright (c) 2006-2021, RT-Thread Development Team
+/*****************************************************************************
+ * Copyright (c) 2019, Nations Technologies Inc.
  *
- * SPDX-License-Identifier: Apache-2.0
+ * All rights reserved.
+ * ****************************************************************************
  *
- * Change Logs:
- * Date           Author       Notes
- * 2021-08-20     breo.com     first version
- */
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the disclaimer below.
+ *
+ * Nations' name may not be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ *
+ * DISCLAIMER: THIS SOFTWARE IS PROVIDED BY NATIONS "AS IS" AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
+ * DISCLAIMED. IN NO EVENT SHALL NATIONS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+ * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * ****************************************************************************/
 
+/**
+ * @file board.h
+ * @author Nations
+ * @version v1.0.0
+ *
+ * @copyright Copyright (c) 2019, Nations Technologies Inc. All rights reserved.
+ */
 #ifndef __BOARD_H__
 #define __BOARD_H__
 
-#include <n32g45x.h>
-#include "n32_msp.h"
+#include "n32g45x.h"
+#include "drv_gpio.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/* Just only support for N32G452XX */
 #define N32_FLASH_START_ADRESS      ((uint32_t)0x08000000)
-#define FLASH_PAGE_SIZE             (2 * 1024)
-#define N32_FLASH_SIZE              (256 * 1024)
+#define N32_FLASH_SIZE              (512 * 1024)
 #define N32_FLASH_END_ADDRESS       ((uint32_t)(N32_FLASH_START_ADRESS + N32_FLASH_SIZE))
 
-/* Internal SRAM memory size[Kbytes] <80>, Default: 80*/
-#define N32_SRAM_SIZE       (80)
+/* Internal SRAM memory size[Kbytes] <144>, Default: 144*/
+#define N32_SRAM_SIZE       (144)
 #define N32_SRAM_END        (0x20000000 + N32_SRAM_SIZE * 1024)
 
-#if defined(__CC_ARM) || defined(__CLANG_ARM)
+void rt_hw_board_init(void);
+
+#if defined(__ARMCC_VERSION)
 extern int Image$$RW_IRAM1$$ZI$$Limit;
 #define HEAP_BEGIN      ((void *)&Image$$RW_IRAM1$$ZI$$Limit)
 #elif __ICCARM__
@@ -41,8 +61,8 @@ extern int __bss_end;
 
 #define HEAP_END        N32_SRAM_END
 
-#ifdef __cplusplus
-}
-#endif
+
+
 
 #endif /* __BOARD_H__ */
+
