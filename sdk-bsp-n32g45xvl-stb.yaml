@@ -43,7 +43,7 @@ features_zh:
   interfaces, Security
 pkg_type: Board_Support_Packages
 pkg_vendor: NATIONS
-pkg_version: 1.0.3
+pkg_version: 1.0.4
 template_projects:
 - builtin_files:
   - files_and_folders:
@@ -62,6 +62,7 @@ template_projects:
     - project.ewd
     - project.ewp
     - project.eww
+    - project.uvguix.nationz
     - project.uvoptx
     - project.uvprojx
     - README.md
@@ -76,6 +77,7 @@ template_projects:
     - template.dep
     - template.ewp
     - template.eww
+    - template.uvguix.nationz
     - template.uvoptx
     - template.uvprojx
     source_path_offset: project_0
