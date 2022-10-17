@@ -39,22 +39,30 @@
 #include <rtthread.h>
 #include <rtdevice.h>
 #include <rthw.h>
-#include "n32g45x.h"
+#include <board.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /* n32 config class */
 struct n32_hwtimer_config
 {
-    const char *name;
+    const char  *name;
     TIM_Module* timer_periph;
-    IRQn_Type irqn;
+    IRQn_Type   irqn;
 };
 
 struct n32_hwtimer
 {
-    rt_hwtimer_t time_device;
+    rt_hwtimer_t              time_device;
     struct n32_hwtimer_config *config;
 };
 
 int rt_hwtimer_init(void);
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* __DRV_HWTIMER__ */

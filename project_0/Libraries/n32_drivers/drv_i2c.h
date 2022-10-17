@@ -39,6 +39,11 @@
 #include <rtthread.h>
 #include <rthw.h>
 #include <rtdevice.h>
+#include "board.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /* n32 config class */
 struct n32_soft_i2c_config
@@ -98,5 +103,9 @@ struct rt_i2c_bus
 };
 
 int rt_hw_i2c_init(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __DRV_I2C__ */

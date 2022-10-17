@@ -36,12 +36,15 @@
 #ifndef __DRV_ADC__
 #define __DRV_ADC__
 
+#include <rthw.h>
 #include <rtthread.h>
 #include <rtdevice.h>
-#include <rthw.h>
-#include "n32g45x.h"
+#include <board.h>
 
-/* n32g45x config class */
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 struct n32_adc_config
 {
     const char *name;
@@ -56,4 +59,8 @@ struct n32_adc
 
 int rt_hw_adc_init(void);
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* __DRV_ADC__ */

@@ -42,20 +42,20 @@ uint32_t SynchPrediv, AsynchPrediv;
 
 static rt_err_t n32_rtc_get_timeval(struct timeval *tv)
 {
-	  struct tm tm_new = {0};
+    struct tm tm_new = {0};
     RTC_DateType  RTC_DateStructure;
     RTC_TimeType  RTC_TimeStructure;
 
     RTC_GetTime(RTC_FORMAT_BIN, &RTC_TimeStructure);
     RTC_GetDate(RTC_FORMAT_BIN, &RTC_DateStructure);
-		
+
     tm_new.tm_sec  = RTC_TimeStructure.Seconds;
     tm_new.tm_min  = RTC_TimeStructure.Minutes;
     tm_new.tm_hour = RTC_TimeStructure.Hours;
-		tm_new.tm_wday = RTC_DateStructure.WeekDay;
+    tm_new.tm_wday = RTC_DateStructure.WeekDay;
     tm_new.tm_mday = RTC_DateStructure.Date;
-    tm_new.tm_mon  = RTC_DateStructure.Month - 1;   
-    tm_new.tm_year = RTC_DateStructure.Year + 100;  
+    tm_new.tm_mon  = RTC_DateStructure.Month - 1;
+    tm_new.tm_year = RTC_DateStructure.Year + 100;
 
     tv->tv_sec     = timegm(&tm_new);
 
@@ -64,7 +64,7 @@ static rt_err_t n32_rtc_get_timeval(struct timeval *tv)
 
 static rt_err_t set_rtc_time_stamp(time_t time_stamp)
 {
-	  struct tm time = {0};
+    struct tm time = {0};
     RTC_DateType  RTC_DateStructure={0};
     RTC_TimeType  RTC_TimeStructure={0};
 
@@ -82,19 +82,21 @@ static rt_err_t set_rtc_time_stamp(time_t time_stamp)
     RTC_DateStructure.Year    = time.tm_year - 100;
     RTC_DateStructure.WeekDay = time.tm_wday + 1;
 
+    /* Configure the RTC date register */
     if(RTC_SetDate(RTC_FORMAT_BIN, &RTC_DateStructure) != SUCCESS)
     {
         return -RT_ERROR;
     }
 
+    /* Configure the RTC time register */
     if(RTC_ConfigTime(RTC_FORMAT_BIN, &RTC_TimeStructure) != SUCCESS)
     {
         return -RT_ERROR;
     }
 
     rt_kprintf("set rtc time.\n");
-		
-		return RT_EOK;
+
+    return RT_EOK;
 }
 
 static rt_err_t rt_rtc_config(void)
@@ -117,42 +119,95 @@ static rt_err_t rt_rtc_config(void)
 static rt_err_t n32_rtc_init(void)
 {
     /* Enable the PWR clock */
+#if defined(SOC_N32G45X) || defined(SOC_N32WB452)
     RCC_EnableAPB1PeriphClk(RCC_APB1_PERIPH_PWR | RCC_APB1_PERIPH_BKP, ENABLE);
     RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_AFIO, ENABLE);
+#elif defined(SOC_N32L43X) || defined(SOC_N32L40X) || defined(SOC_N32G43X)
+    RCC_EnableAPB1PeriphClk(RCC_APB1_PERIPH_PWR, ENABLE);
+    RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_AFIO, ENABLE);
+#endif
+	
     /* Allow access to RTC */
     PWR_BackupAccessEnable(ENABLE);
 
+#if defined(SOC_N32G45X) || defined(SOC_N32WB452)
     /* Reset Backup */
     BKP_DeInit();
-
+#endif
+	
     /* Disable RTC clock */
     RCC_EnableRtcClk(DISABLE);
+	
+#ifdef BSP_RTC_USING_HSE
+    /* Enable the HSE OSC */
+    RCC_EnableLsi(DISABLE);
+    RCC_ConfigHse(RCC_HSE_ENABLE);
+    while (RCC_WaitHseStable() == ERROR)
+    {
+    }
+#if defined(SOC_N32G45X) || defined(SOC_N32WB452)
+    rt_kprintf("rtc clock source is set hse/128!\n");
+    RCC_ConfigRtcClk(RCC_RTCCLK_SRC_HSE_DIV128);
+#elif defined(SOC_N32L43X) || defined(SOC_N32L40X) || defined(SOC_N32G43X)
+    rt_kprintf("rtc clock source is set hse/32!\n");
+    RCC_ConfigRtcClk(RCC_RTCCLK_SRC_HSE_DIV32);
+#endif
+		
+#if defined(SOC_N32G45X) || defined(SOC_N32WB452)
+    SynchPrediv  = 0x1E8;  // 8M/128 = 62.5KHz
+    AsynchPrediv = 0x7F;   // value range: 0-7F
+#elif defined(SOC_N32L43X) || defined(SOC_N32L40X) || defined(SOC_N32G43X)
+    SynchPrediv  = 0x7A0; // 8M/32 = 250KHz
+    AsynchPrediv = 0x7F;  // value range: 0-7F
+#endif
+#endif /* BSP_RTC_USING_HSE */
+
+#ifdef BSP_RTC_USING_LSE
+    rt_kprintf("rtc clock source is set lse!\n");
+    /* Enable the LSE OSC32_IN PC14 */
+    RCC_EnableLsi(DISABLE); // LSI is turned off here to ensure that only one clock is turned on
+
+#if defined(SOC_N32G45X) || defined(SOC_N32WB452)
+    RCC_ConfigLse(RCC_LSE_ENABLE);
+    while(RCC_GetFlagStatus(RCC_FLAG_LSERD) == RESET)
+    {
+    }
+#elif defined(SOC_N32L43X) || defined(SOC_N32L40X) || defined(SOC_N32G43X)
+    RCC_ConfigLse(RCC_LSE_ENABLE,0x28);
+    while (RCC_GetFlagStatus(RCC_LDCTRL_FLAG_LSERD) == RESET)
+    {
+    }
+#endif
+    RCC_ConfigRtcClk(RCC_RTCCLK_SRC_LSE);
+
+    SynchPrediv  = 0xFF; // 32.768KHz
+    AsynchPrediv = 0x7F; // value range: 0-7F
+#endif /* BSP_RTC_USING_LSE */
 
 #ifdef BSP_RTC_USING_LSI
     rt_kprintf("rtc clock source is set lsi!\n");
     /* Enable the LSI OSC */
     RCC_EnableLsi(ENABLE);
+#if defined(SOC_N32G45X) || defined(SOC_N32WB452)
     while(RCC_GetFlagStatus(RCC_FLAG_LSIRD) == RESET)
     {
     }
-    RCC_ConfigRtcClk(RCC_RTCCLK_SRC_LSI);
-
-    SynchPrediv  = 0x136; // 39.64928KHz
-    AsynchPrediv = 0x7F;  // value range: 0-7F
-#else
-    rt_kprintf("rtc clock source is set lse!\n");
-    /* Enable the LSE OSC32_IN PC14 */
-    RCC_EnableLsi(DISABLE); // LSI is turned off here to ensure that only one clock is turned on
-    RCC_ConfigLse(RCC_LSE_ENABLE);
-    while(RCC_GetFlagStatus(RCC_FLAG_LSERD) == RESET)
+#elif defined(SOC_N32L43X) || defined(SOC_N32L40X) || defined(SOC_N32G43X)
+    while (RCC_GetFlagStatus(RCC_CTRLSTS_FLAG_LSIRD) == RESET)
     {
     }
-    RCC_ConfigRtcClk(RCC_RTCCLK_SRC_LSE);
-
-    SynchPrediv  = 0xFF; // 32.768KHz
-    AsynchPrediv = 0x7F; // value range: 0-7F
+#endif
+    RCC_ConfigRtcClk(RCC_RTCCLK_SRC_LSI);
+		
+#if defined(SOC_N32G45X) || defined(SOC_N32WB452)
+    SynchPrediv  = 0x136; // 39.64928KHz
+    AsynchPrediv = 0x7F;  // value range: 0-7F
+#elif defined(SOC_N32L43X) || defined(SOC_N32L40X) || defined(SOC_N32G43X)
+    SynchPrediv  = 0x14A; // 41828Hz
+    AsynchPrediv = 0x7F;  // value range: 0-7F
+#endif
 #endif /* BSP_RTC_USING_LSI */
-    
+
     /* Enable the RTC Clock */
     RCC_EnableRtcClk(ENABLE);
     RTC_WaitForSynchro();

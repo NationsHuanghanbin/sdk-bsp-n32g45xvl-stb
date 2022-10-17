@@ -38,8 +38,17 @@
 
 #include <rthw.h>
 #include <rtthread.h>
+#include "board.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define UART_ENABLE_IRQ(n)            NVIC_EnableIRQ((n))
 #define UART_DISABLE_IRQ(n)           NVIC_DisableIRQ((n))
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* __USART_H__ */

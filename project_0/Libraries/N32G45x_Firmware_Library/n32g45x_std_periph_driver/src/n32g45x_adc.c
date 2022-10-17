@@ -703,7 +703,7 @@ uint32_t ADC_GetDualModeConversionDat(ADC_Module* ADCx)
     /* Check the parameters */
     assert_param(IsAdcModule(ADCx));
     /* Return the dual mode conversion value */
-    if(ADCx==ADC1 | ADCx==ADC2)
+    if((ADCx==ADC1) | (ADCx==ADC2))
         return (uint32_t)ADC1->DAT;
     else
         return (uint32_t)ADC3->DAT;

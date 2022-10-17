@@ -25,7 +25,7 @@
 /* read the JEDEC SFDP command must run at 50 MHz or less */
 #define RT_SFUD_DEFAULT_SPI_CFG                  \
 {                                                \
-    .mode = RT_SPI_MODE_0 | RT_SPI_MSB,          \
+    .mode = RT_SPI_MODE_3 | RT_SPI_MSB,          \
     .data_width = 8,                             \
     .max_hz = RT_SFUD_SPI_MAX_HZ,                \
 }

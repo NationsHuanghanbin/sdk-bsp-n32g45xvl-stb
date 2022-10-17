@@ -32,7 +32,7 @@
  *
  * @copyright Copyright (c) 2019, Nations Technologies Inc. All rights reserved.
  */
- 
+
 #include <rthw.h>
 #include <rtthread.h>
 #include <rtdbg.h>
@@ -62,11 +62,18 @@ static rt_err_t n32_wdt_open(rt_watchdog_t *wdt, rt_uint16_t oflag)
     level = rt_hw_interrupt_disable();
     /* Enable the LSI OSC */
     RCC_EnableLsi(ENABLE);
-
+	
     /* Wait till LSI is ready */
+#if defined(SOC_N32G45X) || defined(SOC_N32WB452)
     while (RCC_GetFlagStatus(RCC_FLAG_LSIRD) == RESET)
     {
     }
+#elif defined(SOC_N32L43X) || defined(SOC_N32L40X) || defined(SOC_N32G43X)
+    while (RCC_GetFlagStatus(RCC_CTRLSTS_FLAG_LSIRD) == RESET)
+    {
+    }
+#endif
+	
     /* Reload IWDG counter */
     IWDG_ReloadKey();
     /* Enable IWDG (the LSI oscillator will be enabled by hardware) */
@@ -104,7 +111,6 @@ static rt_err_t n32_wdt_refresh(rt_watchdog_t *wdt)
  *
  *
  */
-#define WDT_RELOAD_SECOND       ((IWDG->RELV * LsiFreq) / IWDG->PREDIV)
 static rt_err_t n32_wdt_control(rt_watchdog_t *wdt, int cmd, void *args)
 {
     RT_ASSERT(wdt != NULL);
@@ -112,25 +118,27 @@ static rt_err_t n32_wdt_control(rt_watchdog_t *wdt, int cmd, void *args)
     uint16_t reload_value;
     uint32_t relv, prediv;
     static rt_tick_t last_tick = 0;
-    
+
     relv = IWDG->RELV;
     prediv = IWDG->PREDIV;
+	
     switch (cmd)
     {
         case RT_DEVICE_CTRL_WDT_GET_TIMEOUT:
         {
-            *(uint16_t *)args = relv*LsiFreq/prediv;
+            *(uint16_t *)args = ((relv * LsiFreq) / prediv);
         }
         break;
+				
         case RT_DEVICE_CTRL_WDT_SET_TIMEOUT:
         {
             RT_ASSERT(*(uint16_t *)args != 0);
-            reload_value = *(uint16_t *)args;    
+            reload_value = *(uint16_t *)args;
             if(reload_value >  0xFFF * 32 *1000 / LsiFreq)
             {
                 LOG_W("wdg set timeout parameter too large, please less than %d ms\n", 0xFFF * 32 *1000 / LsiFreq);
                 return -RT_EINVAL;
-            }            
+            }
             /* Enable write access to IWDG_PR and IWDG_RLR registers */
             IWDG_WriteConfig(IWDG_WRITE_ENABLE);
             /* IWDG counter clock: LSI/32 */
@@ -140,29 +148,33 @@ static rt_err_t n32_wdt_control(rt_watchdog_t *wdt, int cmd, void *args)
             IWDG_WriteConfig(IWDG_WRITE_DISABLE);
         }
         break;
+				
         case RT_DEVICE_CTRL_WDT_GET_TIMELEFT:
-            *(uint16_t *)args = relv*LsiFreq/prediv - \
+            *(uint16_t *)args = ((relv * LsiFreq) / prediv) - \
                                 (rt_tick_get() - last_tick) / RT_TICK_PER_SECOND;
 
             break;
+				
         case RT_DEVICE_CTRL_WDT_KEEPALIVE:
         {
             last_tick = rt_tick_get();
             n32_wdt_refresh(wdt);
         }
         break;
+				
         case RT_DEVICE_CTRL_WDT_START:
         {
             n32_wdt_open(wdt, *(rt_uint32_t *)args);
             last_tick = rt_tick_get();
         }
         break;
+				
         case RT_DEVICE_CTRL_WDT_STOP:
         {
             n32_wdt_close(wdt);
-
         }
         break;
+				
         default:
             return RT_EINVAL;
     }

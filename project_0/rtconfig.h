@@ -89,6 +89,7 @@
 #define RT_USING_PIN
 #define RT_USING_ADC
 #define RT_USING_DAC
+#define RT_USING_RTC
 #define RT_USING_SPI
 #define RT_USING_WDT
 
@@ -175,6 +176,9 @@
 /* peripheral libraries and drivers */
 
 
+/* Kendryte SDK */
+
+
 /* AI packages */
 
 
@@ -186,6 +190,40 @@
 
 
 /* entertainment: terminal games and other interesting software packages */
+
+
+/* Arduino libraries */
+
+
+/* Projects */
+
+
+/* Sensors */
+
+
+/* Display */
+
+
+/* Timing */
+
+
+/* Data Processing */
+
+
+/* Data Storage */
+
+/* Communication */
+
+
+/* Device Control */
+
+
+/* Other */
+
+/* Signal IO */
+
+
+/* Uncategorized */
 
 #define SOC_FAMILY_N32
 #define SOC_SERIES_N32G45X

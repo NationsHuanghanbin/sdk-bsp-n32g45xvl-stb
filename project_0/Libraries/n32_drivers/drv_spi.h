@@ -40,48 +40,20 @@
 #include <rtthread.h>
 #include <board.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 struct n32_spi_cs
 {
     GPIO_Module* GPIOx;
     uint32_t GPIO_Pin;
 };
 
-#ifdef BSP_USING_SPI1
-#define SPI1_SCK_PIN             GPIO_PIN_5 /* PA.05 */
-#define SPI1_SCK_GPIO_PORT       GPIOA      /* GPIOA */
-#define SPI1_SCK_GPIO_CLK        RCC_APB2_PERIPH_GPIOA
-#define SPI1_MISO_PIN            GPIO_PIN_6 /* PA.06 */
-#define SPI1_MISO_GPIO_PORT      GPIOA      /* GPIOA */
-#define SPI1_MISO_GPIO_CLK       RCC_APB2_PERIPH_GPIOA
-#define SPI1_MOSI_PIN            GPIO_PIN_7 /* PA.07 */
-#define SPI1_MOSI_GPIO_PORT      GPIOA      /* GPIOA */
-#define SPI1_MOSI_GPIO_CLK       RCC_APB2_PERIPH_GPIOA
-#endif  /* RT_USING_SPI1 */
-
-#ifdef BSP_USING_SPI2
-#define SPI2_SCK_PIN             GPIO_PIN_13 /* PB.13 */
-#define SPI2_SCK_GPIO_PORT       GPIOB       /* GPIOB */
-#define SPI2_SCK_GPIO_CLK        RCC_APB2_PERIPH_GPIOB
-#define SPI2_MISO_PIN            GPIO_PIN_14 /* PB.14 */
-#define SPI2_MISO_GPIO_PORT      GPIOB       /* GPIOB */
-#define SPI2_MISO_GPIO_CLK       RCC_APB2_PERIPH_GPIOB
-#define SPI2_MOSI_PIN            GPIO_PIN_15 /* PB.15 */
-#define SPI2_MOSI_GPIO_PORT      GPIOB       /* GPIOB */
-#define SPI2_MOSI_GPIO_CLK       RCC_APB2_PERIPH_GPIOB
-#endif  /* RT_USING_SPI2 */
-
-#ifdef BSP_USING_SPI3
-#define SPI3_SCK_PIN             GPIO_PIN_3 /* PB.03 */
-#define SPI3_SCK_GPIO_PORT       GPIOB      /* GPIOB */
-#define SPI3_SCK_GPIO_CLK        RCC_APB2_PERIPH_GPIOB
-#define SPI3_MISO_PIN            GPIO_PIN_4 /* PB.04 */
-#define SPI3_MISO_GPIO_PORT      GPIOB      /* GPIOB */
-#define SPI3_MISO_GPIO_CLK       RCC_APB2_PERIPH_GPIOB
-#define SPI3_MOSI_PIN            GPIO_PIN_5 /* PB.05 */
-#define SPI3_MOSI_GPIO_PORT      GPIOB      /* GPIOB */
-#define SPI3_MOSI_GPIO_CLK       RCC_APB2_PERIPH_GPIOB
-#endif  /* RT_USING_SPI3 */
-
 int rt_hw_spi_init(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __DRV_SPI_H__ */

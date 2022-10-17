@@ -36,20 +36,24 @@
 #ifndef __DRV_GPIO_H__
 #define __DRV_GPIO_H__
 
-#include "n32g45x.h"
+#include <board.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define __N32_PORT(port)  GPIO##port##_BASE
 
 #define GET_PIN(PORTx,PIN) (rt_base_t)((16 * ( ((rt_base_t)__N32_PORT(PORTx) - (rt_base_t)GPIOA_BASE)/(0x0400UL) )) + PIN)
 
 #define __N32_PIN(index, gpio, gpio_pin)                                \
-    {                                                                       \
-        index, gpio, gpio_pin                                               \
+    {                                                                   \
+        index, gpio, gpio_pin                                           \
     }
 
 #define __N32_PIN_RESERVE                                               \
-    {                                                                       \
-        -1, 0, 0                                                            \
+    {                                                                   \
+        -1, 0, 0                                                        \
     }
 
 /* GPIO driver */
@@ -66,8 +70,11 @@ struct pin_irq_map
     IRQn_Type irqno;
 };
 
-void GPIOInit(GPIO_Module* GPIOx, GPIO_ModeType mode, GPIO_SpeedType speed, uint16_t Pin);
 int rt_hw_pin_init(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __DRV_GPIO_H__ */
 

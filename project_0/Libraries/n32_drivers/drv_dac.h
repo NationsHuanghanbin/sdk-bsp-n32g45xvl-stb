@@ -39,6 +39,11 @@
 #include <rtthread.h>
 #include <rtdevice.h>
 #include <rthw.h>
+#include <board.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /* n32 config class */
 struct n32_dac_config
@@ -53,7 +58,10 @@ struct n32_dac
     struct n32_dac_config *config;
 };
 
-
 int rt_hw_dac_init(void);
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* __DRV_DAC__ */
